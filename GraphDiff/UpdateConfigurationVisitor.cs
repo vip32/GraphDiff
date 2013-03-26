@@ -3,6 +3,7 @@
  * If you would like to use the code please leave this comment at the top of the page
  * (c) Brent McKendrick 2012
  */
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 
 // This should be internal only
-namespace RefactorThis.EFExtensions.Internal
+namespace GraphDiff
 {
     /// <summary>
     /// Used internally to represent the update graph

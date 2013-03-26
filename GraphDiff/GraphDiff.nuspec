@@ -1,0 +1,29 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>GraphDiff</id>
+    <version>1.1</version>
+    <authors>brentmckendrick, vvproosdij</authors>
+    <owners>brentmckendrick, vvproosdij</owners>
+    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>https://github.com/refactorthis/GraphDiff</projectUrl>
+    <iconUrl>http://google.com</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>
+      Entity Framework Code First graph update extension method.
+    </description>
+    <summary>
+      Looking for a complete solution for automatically updating a graph of entities using the Entity Framework?
+
+      Say you have a Company which has many Contacts. A contact is not defined on its own and is a One-To-Many (with required parent) record of a Company. i.e. The company is the Aggregate Root. Assume you have a detached Company graph with its Contacts attached and want to reflect the state of this graph in the database.
+
+      At present using the Entity Framework you will need to perform the updates of the contacts manually, check if each contact is new and add, check if updated and edit, check if removed then delete it from the database. Once you have to do this for a few different aggregates in a large system you start to realize there must be a better, more generic way.
+
+      Well good news is that after a few refactorings I’ve found a nice solution to this problem. The provided extension method handles the whole diff for you.
+    </summary>
+    <tags>EntityFramework DbContext Merge Graph Update</tags>
+    <dependencies>
+      <dependency id="EntityFramework" version="4.3.0" />
+    </dependencies>
+  </metadata>
+</package>

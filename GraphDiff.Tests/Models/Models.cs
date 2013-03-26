@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.ComponentModel.DataAnnotations;
 
-namespace RefactorThis.DetachedUpdate.Tests.Models
+namespace GraphDiff.Tests.Models
 {
     // Manage your company, contacts and projects.
 

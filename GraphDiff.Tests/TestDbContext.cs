@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Data.Entity;
-using RefactorThis.DetachedUpdate.Tests.Models;
+﻿using System.Data.Entity;
+using GraphDiff.Tests.Models;
 
-namespace RefactorThis.DetachedUpdate.Tests
+namespace GraphDiff.Tests
 {
     public class TestDbContext : DbContext
     {
