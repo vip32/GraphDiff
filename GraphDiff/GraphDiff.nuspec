@@ -2,12 +2,12 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>GraphDiff</id>
-    <version>1.1</version>
+    <version>1.2</version>
     <authors>brentmckendrick, vvproosdij</authors>
     <owners>brentmckendrick, vvproosdij</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
-    <projectUrl>https://github.com/refactorthis/GraphDiff</projectUrl>
-    <iconUrl>http://google.com</iconUrl>
+    <projectUrl>https://github.com/vip32/GraphDiff</projectUrl>
+    <iconUrl>https://github.com/vip32/GraphDiff</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>
       Entity Framework Code First graph update extension method.
@@ -21,7 +21,7 @@
 
       Well good news is that after a few refactorings I’ve found a nice solution to this problem. The provided extension method handles the whole diff for you.
     </summary>
-    <tags>EntityFramework DbContext Merge Graph Update</tags>
+    <tags>EntityFramework DbContext EF CodeFirst Merge Graph Update</tags>
     <dependencies>
       <dependency id="EntityFramework" version="4.3.0" />
     </dependencies>
