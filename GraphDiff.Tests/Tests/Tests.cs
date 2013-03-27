@@ -15,7 +15,7 @@ namespace GraphDiff.Tests
     {
         public Tests()
         {
-            Database.SetInitializer<TestDbContext>(new DropCreateDatabaseAlways<TestDbContext>());
+            Database.SetInitializer(new DropCreateDatabaseAlways<TestDbContext>());
         }
 
         [TestInitialize()]
@@ -67,6 +67,50 @@ namespace GraphDiff.Tests
                     }
                 });
 
+                var company3 = context.Companies.Add(new Company
+                {
+                    Name = "Company 3",
+                    Contacts = new List<CompanyContact>
+                    {
+                        new CompanyContact 
+                        { 
+                            FirstName = "Alex",
+                            LastName = "Fix",
+                            Infos = new List<ContactInfo>
+                            {
+                                new ContactInfo
+                                {
+                                    Description = "Work",
+                                    Email = "test@test.com",
+                                    PhoneNumber = "456456456456"
+                                }
+                            }
+                        }
+                    }
+                });
+
+                var company4 = context.Companies.Add(new Company
+                {
+                    Name = "Company 4",
+                    Contacts = new List<CompanyContact>
+                    {
+                        new CompanyContact 
+                        { 
+                            FirstName = "Axel",
+                            LastName = "Dub",
+                            Infos = new List<ContactInfo>
+                            {
+                                new ContactInfo
+                                {
+                                    Description = "Work",
+                                    Email = "test@test.com",
+                                    PhoneNumber = "456456456456"
+                                }
+                            }
+                        }
+                    }
+                });
+
                 var project1 = context.Projects.Add(new Project
                 {
                     Name = "Major Project 1",
@@ -105,9 +149,9 @@ namespace GraphDiff.Tests
             using (var context = new TestDbContext())
             {
                 context.Database.ExecuteSqlCommand("DELETE FROM Companies");
-                context.Database.ExecuteSqlCommand("DBCC CHECKIDENT (Companies, reseed, 1)");
+                context.Database.ExecuteSqlCommand("DBCC CHECKIDENT (Companies, reseed, 0)");
                 context.Database.ExecuteSqlCommand("DELETE FROM Projects");
-                context.Database.ExecuteSqlCommand("DBCC CHECKIDENT (Projects, reseed, 1)");
+                context.Database.ExecuteSqlCommand("DBCC CHECKIDENT (Projects, reseed, 0)");
                 context.Database.ExecuteSqlCommand("DELETE FROM Managers");
                 Assert.IsTrue(context.Companies.Count() == 0);
                 Assert.IsTrue(context.Projects.Count() == 0);
@@ -173,7 +217,7 @@ namespace GraphDiff.Tests
         }
 
         [TestMethod]
-        public void AssociatedEntityWhereNewValueIsNull()
+        public void AssociatedEntityWhereNewValueIsNull() // does not work! cannot set object state
         {
             Project project;
             using (var context = new TestDbContext())
@@ -181,7 +225,6 @@ namespace GraphDiff.Tests
                 project = context.Projects
                     .Include(p => p.LeadCoordinator)
                     .Single(p => p.Id == 2);
-
             } // Simulate detach
 
             project.LeadCoordinator = null;
@@ -423,6 +466,7 @@ namespace GraphDiff.Tests
             // don't know what to do about this yet..
             Project project1;
             Company company2;
+            int count;
             using (var context = new TestDbContext())
             {
                 project1 = context.Projects
@@ -430,6 +474,7 @@ namespace GraphDiff.Tests
                     .Single(p => p.Id == 2);
 
                 company2 = context.Companies.Single(p => p.Id == 2);
+                count = project1.Stakeholders.Count();
             } // Simulate detach
 
             project1.Stakeholders.Add(company2);
@@ -444,7 +489,65 @@ namespace GraphDiff.Tests
                 Assert.IsTrue(context.Projects
                     .Include(p => p.Stakeholders)
                     .Single(p => p.Id == 2)
+                    .Stakeholders.Count == count + 1);
+            }
+        }
+
+        [TestMethod]
+        public void AssociatedCollectionAddById4()
+        {
+            // don't know what to do about this yet..
+            Project project1;
+            using (var context = new TestDbContext())
+            {
+                project1 = context.Projects
+                    .Include(p => p.Stakeholders) // can be removed
+                    .Single(p => p.Id == 2);
+            } // Simulate detach
+            project1.Stakeholders.AddRange(new[]{new Company {Id = 4}}); 
+
+            using (var context = new TestDbContext())
+            {
+                // Setup mapping
+                context.UpdateGraph(project1, map => map
+                    .AssociatedCollection(p => p.Stakeholders));
+
+                context.SaveChanges();
+                Assert.IsTrue(context.Projects
+                    .Include(p => p.Stakeholders)
+                    .Single(p => p.Id == 2)
                     .Stakeholders.Count == 2);
+            }
+        }
+
+        [TestMethod]
+        public void AssociatedCollectionAddById3()
+        {
+            // don't know what to do about this yet..
+            Project project1;
+            using (var context = new TestDbContext())
+            {
+                project1 = context.Projects
+                    .Include(p => p.Stakeholders) // can be removed
+                    .Single(p => p.Id == 2);
+            } // Simulate detach
+
+            project1.Stakeholders = new List<Company>()
+                {
+                    new Company {Id = 3}
+                };
+
+            using (var context = new TestDbContext())
+            {
+                // Setup mapping
+                context.UpdateGraph(project1, map => map
+                    .AssociatedCollection(p => p.Stakeholders));
+
+                context.SaveChanges();
+                Assert.IsTrue(context.Projects
+                    .Include(p => p.Stakeholders)
+                    .Single(p => p.Id == 2)
+                    .Stakeholders.Count == 1);
             }
         }
 
@@ -519,7 +622,7 @@ namespace GraphDiff.Tests
             {
                 company1 = context.Companies
                     .Include(p => p.Contacts)
-                    .Single(p => p.Id == 2);
+                    .Single(p => p.Id == 1);
             } // Simulate detach
 
             company1.Name = "Company #1"; // Change from Company 1 to Company #1
@@ -534,12 +637,12 @@ namespace GraphDiff.Tests
                 context.SaveChanges();
                 Assert.IsTrue(context.Companies
                     .Include(p => p.Contacts)
-                    .Single(p => p.Id == 2)
+                    .Single(p => p.Id == 1)
                     .Contacts.First()
                     .FirstName == "Bobby");
                 Assert.IsTrue(context.Companies
                     .Include(p => p.Contacts)
-                    .Single(p => p.Id == 2)
+                    .Single(p => p.Id == 1)
                     .Contacts.First()
                     .LastName == "Brown");
             }
