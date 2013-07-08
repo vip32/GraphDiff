@@ -2,12 +2,11 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>GraphDiff</id>
-    <version>1.2</version>
-    <authors>brentmckendrick, vvproosdij</authors>
+    <version>1.3-EFBeta</version>
+    <authors>brentmckendrick, vvproosdij, mrjackdavis</authors>
     <owners>brentmckendrick, vvproosdij</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
-    <projectUrl>https://github.com/vip32/GraphDiff</projectUrl>
-    <iconUrl>https://github.com/vip32/GraphDiff</iconUrl>
+    <projectUrl>https://github.com/mrjackdavis/GraphDiff</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>
       Entity Framework Code First graph update extension method.
@@ -23,7 +22,7 @@
     </summary>
     <tags>EntityFramework DbContext EF CodeFirst Merge Graph Update</tags>
     <dependencies>
-      <dependency id="EntityFramework" version="4.3.0" />
+      <dependency id="EntityFramework" version="6.0.0-beta1" />
     </dependencies>
   </metadata>
 </package>

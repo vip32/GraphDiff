@@ -241,7 +241,7 @@ namespace GraphDiff
             object set = generic.Invoke(objectContext, null);
 
             PropertyInfo entitySetPI = set.GetType().GetProperty("EntitySet");
-            System.Data.Metadata.Edm.EntitySet entitySet = (System.Data.Metadata.Edm.EntitySet)entitySetPI.GetValue(set, null);
+            System.Data.Entity.Core.Metadata.Edm.EntitySet entitySet = (System.Data.Entity.Core.Metadata.Edm.EntitySet)entitySetPI.GetValue(set, null);
 
             foreach (string name in entitySet.ElementType.KeyMembers.Select(k => k.Name))
                 yield return entityType.GetProperty(name);
